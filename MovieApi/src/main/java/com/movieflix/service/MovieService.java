@@ -14,4 +14,8 @@ public interface MovieService {
     MovieDto getMovie(Integer movieId) throws MovieNotFoundException;
 
     List<MovieDto> getAllMovies();
+
+    MovieDto updateMovie(Integer movieId, MovieDto movieDto, MultipartFile file) throws IOException, MovieNotFoundException;
+
+    String deleteMovie(Integer movieId) throws MovieNotFoundException, IOException;
 }
