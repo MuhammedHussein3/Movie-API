@@ -1,5 +1,6 @@
 package com.movieflix.service;
 
+import com.movieflix.exception.FileNameExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,10 @@ public class FileServiceImpl implements FileService{
     @Override
     public String uploadFile(String path, MultipartFile file) throws IOException {
         String fileName = file.getOriginalFilename();
-        String pathStorage = path.concat(File.separator).concat(fileName);
+        if (Files.exists(Paths.get(path+File.separator+fileName))) {
+            throw new FileNameExistException("File already exists enter another file name");
+        }
+        String pathStorage = path + File.separator + fileName;
 
         // This line does not create the file or directory physically on the disk;
         // it merely creates a Java object representing the file or directory specified by the path.
@@ -42,33 +46,4 @@ public class FileServiceImpl implements FileService{
        return new FileInputStream(filePath);
     }
 
-
-//
-//    Logger log = LoggerFactory.getLogger(FileServiceImpl.class);
-//    @Override
-//    public String uploadFile(String path, MultipartFile file) throws IOException{
-//        //get file name
-//        String fileName = file.getOriginalFilename();
-//        //get file path
-//        String filePath = path + File.separator + fileName;
-//        //create file object
-//        File f = new File(filePath);
-//        if(!f.exists()){
-//            f.mkdir();
-//        }
-//        //copy the file or upload file  to the path
-//        try {
-//            Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-//        }catch (IOException e){
-//            log.info("error in files copy");
-//        }
-//
-//        return fileName;
-//    }
-//    @Override
-//    public InputStream getResourceFile(String path, String fileName) throws FileNotFoundException{
-//
-//        String filePath = path + File.separator + fileName;
-//        return new FileInputStream(filePath);
-//    }
 }
