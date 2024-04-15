@@ -29,7 +29,14 @@ public class AppException {
     }
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(MovieNotFoundException.class)
-    public Map<String,String> fileNotFoundException(MovieNotFoundException ex){
+    public Map<String,String> movieNotFoundException(MovieNotFoundException ex){
+        Map<String,String> map = new HashMap<>();
+        map.put("Error message : ",ex.getMessage());
+        return map;
+    }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(FileNameExistException.class)
+    public Map<String,String> fileNameExistException(FileNameExistException ex){
         Map<String,String> map = new HashMap<>();
         map.put("Error message : ",ex.getMessage());
         return map;
